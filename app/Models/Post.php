@@ -14,4 +14,9 @@ class Post extends Model
         'title',
         'content',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

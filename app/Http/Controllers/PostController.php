@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
 class PostController extends Controller
@@ -24,7 +25,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('Posts.create');
+        $categories = Category::all();
+        return view('Posts.create',compact('categories'));
     }
 
     /**
@@ -35,8 +37,10 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        Post::query()->create($request->only('slug','title','content'));
-        return redirect()->route('posts.index')->with('chuc mung','ban da them thanh cong');
+        // dd($request->input('categories'));
+        $post = Post::query()->create($request->only('slug','title','content'));
+        $post->categories()->sync($request->input('categories'));
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -58,8 +62,11 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::query()->findOrFail($id);
-        return view('Posts.edit', ['post'=>$post]);
+        $categories = Category::all();
+        $post = Post::with('categories')->findOrFail($id);
+
+        // dd($post->categories->contains(2));
+        return view('Posts.edit', ['post'=>$post,'categories'=>$categories]);
     }
 
     /**
@@ -76,7 +83,8 @@ class PostController extends Controller
         /*gui request update chon cac doi tuong can cap nhap*/
         $post->update($request->only('title','content','slug'));
         /**/
-        return redirect()->route('posts.index')->with('chuc mung','ban da sua thanh cong');
+        $post->categories()->sync($request->input('categories'));
+        return redirect()->route('posts.index');
     }
 
     /**
