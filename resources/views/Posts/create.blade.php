@@ -11,22 +11,42 @@
             <form action="{{route('posts.store')}}" method="POST">
                 @csrf
 
-
                 <div class="form-group has-error">
                     <label for="slug">Slug <span class="require">*</span> <small>(This field use in url path.)</small></label>
                     <input type="text" class="form-control" name="slug" value="" />
                     <span class="help-block">Field not entered!</span>
+                    {{-- Error --}}
+                    @error('slug')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
+
 
                 <div class="form-group">
                     <label for="title">Title <span class="require">*</span></label>
                     <input type="text" class="form-control" name="title" value="" />
+                    {{-- Error --}}
+                    @error('title')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
+
 
                 <div class="form-group">
                     <label for="content">Content</label>
                     <textarea rows="5" class="form-control" name="content" ></textarea>
+                    {{-- Error --}}
+                    @error('content')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
+
 
                 <div class="form-group">
                     <p><span class="require">*</span> - required fields</p>

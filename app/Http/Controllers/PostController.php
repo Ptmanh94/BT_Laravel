@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePost;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
@@ -35,7 +36,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
         // dd($request->input('categories'));
         $post = Post::query()->create($request->only('slug','title','content'));
@@ -76,7 +77,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePost $request, $id)
     {
         /*lay du lieu ra theo id*/
         $post = Post::query()->findOrFail($id);
